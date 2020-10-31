@@ -1,10 +1,9 @@
 // import { subscriptionCron } from './cron/sales/subscribers'
 
 require('dotenv').config()
-import { Request, Response } from 'express'
+import express, {NextFunction, Request, Response} from 'express'
 
 const createError = require('http-errors')
-import express = require('express')
 import cors = require('cors')
 
 const debug = require('debug')('biztools:server')
@@ -27,17 +26,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, '../public')))
-// app.use('/', (req, res, next) => {
-//   console.log(req.body)
-//   next()
-// })
 
-// server.applyMiddleware({ app: app, path: '/graphql' })
 app.use('/', IndexRouter)
-// app.use('/auth', authRouter)
-// app.use('/btadmin', adminRouter)
-// app.use('/verify', verifyRouter)
-// app.use('/sites', sitesRouter)
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -45,7 +36,7 @@ app.use(function (req, res, next) {
 })
 
 // error handler
-app.use(function (err, req: Request, res, next) {
+app.use(function (err:any, req: Request, res:Response) {
   // set locals, only providing error in development
   res.locals.path = req.path
   res.locals.message = err.message
@@ -87,8 +78,7 @@ function onError(error: any) {
   if (error.syscall !== 'listen') {
     throw error
   }
-
-  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port
+  
 
   switch (error.code) {
     case 'EACCES':
